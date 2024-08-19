@@ -1,9 +1,9 @@
 {
 	"name": "fsck-spaces",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"license": "MIT",
 	"description": "Recursively convert spaces to tabs in source code",
-	"type" : "module",
+	"type": "module",
 	"keywords": [
 		"tabs",
 		"spaces",
