@@ -1,0 +1,23 @@
+{
+	"name": "fsck-spaces",
+	"version": "1.0.0",
+	"license": "MIT",
+	"description": "Recursively convert spaces to tabs in source code",
+	"type" : "module",
+	"keywords": [
+		"tabs",
+		"spaces",
+		"convert"
+	],
+	"homepage": "https://github.com/bobbles911/fsck-spaces",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bobbles911/fsck-spaces.git"
+	},
+	"bin": {
+		"fsck-spaces": "./src/cli.js"
+	},
+	"dependencies": {
+		"yargs": "^17.7.2"
+	}
+}
