@@ -12,9 +12,8 @@ function replaceSpacesInLine(line, tabSize) {
 }
 
 function replaceSpaces(sourceStr) {
-	if (sourceStr.length == 0) {
-		return "";
-	}
+	// Default to unmodified
+	let result = sourceStr;
 
 	const lines = sourceStr.split(/(?<=\r?\n)/);
 	const spaceCounts = lines.map(line => countPrecedingSpaces(line));
@@ -32,38 +31,44 @@ function replaceSpaces(sourceStr) {
 		}
 	}
 
-	//console.log("spaceDifferenceTallies", spaceDifferenceTallies);
-	//console.log(lines.slice(0, 10));
-
 	const spaceDifferenceTalliesArray = Object.entries(spaceDifferenceTallies);
 
 	if (spaceDifferenceTalliesArray.length > 0) {
 		const biggestTally = spaceDifferenceTalliesArray.reduce((acc, curr) => curr[1] > acc[1] ? curr : acc, spaceDifferenceTalliesArray[0])[0];
-		//console.log("Biggest tally", biggestTally);
 		detectedTabSize = biggestTally;
 	}
 
-	console.log("Detected tab size as", detectedTabSize);
-
+	// Replace the spaces!
 	if (detectedTabSize > 0) {
-		//console.log(sourceStr.slice(0, 200));
-		return lines.map(line => replaceSpacesInLine(line, detectedTabSize)).join("");
+		result = lines.map(line => replaceSpacesInLine(line, detectedTabSize)).join("");
 	}
 
-	// Return unmodified
-	return sourceStr;
+	return {
+		result,
+		detectedTabSize,
+		modifiedFile : detectedTabSize > 0
+	};
 }
 
 export default async function processFiles(filesIterator, dryRun = true) {
-	for await (const filePath of filesIterator) {
-		console.log("Replacing in file", filePath);
+	let fileModifiedCount = 0;
 
-		const result = replaceSpaces(
+	for await (const filePath of filesIterator) {
+		const {result, detectedTabSize, modifiedFile} = replaceSpaces(
 			await readFile(filePath, {encoding : "utf-8"})
 		);
+
+		if (modifiedFile) {
+			fileModifiedCount ++;
+			console.log(`Replaced spaces with tab size ${detectedTabSize} in file ${filePath}`);
+		} else {
+			console.log(`No spaces found in file ${filePath}`);
+		}
 
 		if (!dryRun) {
 			await writeFile(filePath, result);
 		}
 	}
+
+	console.log(`Replaced spaces in ${fileModifiedCount} file(s).`);
 }

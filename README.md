@@ -4,7 +4,7 @@
 
 These errors are found and recursively replaced with the correct usage of tabs.
 
-By default, the following list of file extensions will be fixed: `js, ts, jsx, tsx, json, css`, as the scourge appears to most prevalently afflict those files used by web developers.
+By default, the following list of file extensions will be fixed: `js, ts, jsx, tsx, cjs, mjs, json, css`, as the scourge appears to most prevalently afflict those files used by web developers.
 
 To add to this list you can call `fsck-spaces --more=cpp,h,whatever` 
 
