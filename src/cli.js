@@ -5,7 +5,7 @@ import yargs from "yargs";
 import iterateFiles from "./iterateFiles.js";
 import processFiles from "./processFiles.js";
 
-let fileTypes = ["js", "ts", "jsx", "tsx", "cjs", "mjs", "json", "css"];
+let fileTypes = ["js", "ts", "jsx", "tsx", "cjs", "mjs", "json", "html", "css"];
 let excludeDirs = ["node_modules"];
 let dryRun = false;
 
