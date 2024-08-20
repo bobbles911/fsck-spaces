@@ -60,13 +60,14 @@ export default async function processFiles(filesIterator, dryRun = true) {
 
 		if (modifiedFile) {
 			fileModifiedCount ++;
+
+			if (!dryRun) {
+				await writeFile(filePath, result);
+			}
+			
 			console.log(`Replaced spaces with tab size ${detectedTabSize} in file ${filePath}`);
 		} else {
 			console.log(`No spaces found in file ${filePath}`);
-		}
-
-		if (!dryRun) {
-			await writeFile(filePath, result);
 		}
 	}
 
