@@ -1,0 +1,23 @@
+# AGENTS.md
+
+- Project: `fsck-spaces`, an MIT-licensed Node.js CLI that recursively converts leading indentation spaces to tabs in source files.
+- History: package metadata points to `github.com/bobbles911/fsck-spaces`; recent commits are releases through `1.0.3`, adding HTML support and avoiding writes for unmodified files.
+- Runtime: ESM JavaScript (`"type": "module"`) with `yargs` as the only direct dependency; use npm because `package-lock.json` is present.
+- Build: no build step. The executable entry point is `src/cli.js` via the `fsck-spaces` bin.
+- Install deps: `npm install`.
+- CLI smoke test: `node src/cli.js --help`.
+- Dry-run check: `node src/cli.js --dry-run ./some-path`; `some-path` may be a single file or a directory.
+- Add extensions: `node src/cli.js --dry-run --more=md,vue ./some-path`.
+- Exclude directories: `node src/cli.js --dry-run --no=dist,coverage ./some-path`; `node_modules` is excluded by default.
+- Tests: there is no formal test runner or `npm test` script. For a single-test equivalent, create/use a small fixture directory and run the CLI against only that path with `--dry-run` first.
+- Keep source as plain ESM JavaScript; do not introduce TypeScript, transpilation, or a framework without a clear need.
+- Formatting style: tabs for indentation, no semicolons, double-quoted strings, compact object spacing like `{encoding : "utf-8"}` and yargs option keys with spaces before colons.
+- Imports: use named imports from `node:` built-ins and explicit `.js` extensions for local modules.
+- Naming: functions and variables use `camelCase`; module filenames use `camelCase.js`; default exports are used for the two helper modules.
+- Error handling is intentionally simple: CLI and iterator catch errors and log to stderr/console rather than throwing rich custom errors.
+- Architecture: `cli.js` owns argument parsing and path resolution, `iterateFiles.js` is an async generator for recursive file discovery, and `processFiles.js` reads, transforms, optionally writes, and logs results.
+- File discovery in directories only includes configured extensions and skips hidden directories as well as excluded directory names; preserve this to avoid unexpectedly rewriting dependency or dot-directories.
+- Direct single-file paths are always processed regardless of extension; extension filtering only applies when discovering files inside directories.
+- The indentation algorithm infers tab size from the most common non-zero change in leading-space counts between adjacent lines, then replaces leading spaces with `Math.ceil(spaceCount / tabSize)` tabs.
+- Preserve the dry-run safety path: inspect with `--dry-run` before changing files, and only call `writeFile` when `modifiedFile` is true.
+- Default extensions are `js, ts, jsx, tsx, cjs, mjs, json, html, css`; update README and CLI defaults together if this list changes.
