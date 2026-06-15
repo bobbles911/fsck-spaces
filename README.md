@@ -17,7 +17,8 @@ To add to this list you can call `fsck-spaces --more=cpp,h,whatever`
 | Command | Description |
 | --- | --- |
 | `fsck-spaces` | Recurse and replace in the current directory. |
-| `fsck-spaces ./some-path` | Run at some other path. |
+| `fsck-spaces ./some-path` | Run recursively at some other path. |
+| `fsck-spaces ./some-file.txt` | Replace in the single specified file. |
 | `fsck-spaces --more=other,file,extensions` | Add to the built in list. |
 | `fsck-spaces --no=some_dir,other_dir` | Exclude some directories. `node_modules` is excluded by default. |
 | `fsck-spaces --dry-run` | 😳️ just list the files which would be modified. |
