@@ -1,8 +1,15 @@
-import {opendir} from "node:fs/promises";
+import {opendir, stat} from "node:fs/promises";
 import {join, extname} from "node:path";
 
 export default async function* iterateFiles(absPath, fileTypes, excludeDirs) {
 	try {
+		const pathStat = await stat(absPath);
+
+		if (pathStat.isFile()) {
+			yield absPath;
+			return;
+		}
+
 		const dir = await opendir(absPath);
 
 		for await (const dirent of dir) {

@@ -17,7 +17,7 @@ const argv = yargs(process.argv.slice(2))
 	})
 	.option("dry-run", {
 		describe : "just list the files which would be modified",
-		type : "string"
+		type : "boolean"
 	})
 	.help()
 	.argv;
